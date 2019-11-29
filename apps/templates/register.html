@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>移动运营系统注册</title>
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='font-awesome/css/font-awesome.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/plugins/iCheck/custom.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/animate.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <!-- Mainly scripts -->
+    <script src="{{ url_for('static', filename='js/jquery-2.1.1.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <!-- iCheck -->
+    <script src="{{ url_for('static', filename='js/plugins/iCheck/icheck.min.js') }}"></script>
+</head>
+<body class="gray-bg">
+<div class="middle-box text-center loginscreen   animated fadeInDown">
+    <div>
+        <div>
+            <br><br><br><br><br><br>
+        </div>
+        <h3>欢迎注册移动运营系统</h3>
+        <form class="m-t" role="form" action="login.html">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="用户名" required="">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="密码" required="">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="确认密码" required="">
+            </div>
+            <button type="submit" class="btn btn-primary block full-width m-b">注册</button>
+            <p class="text-muted text-center"><small>已有账户?</small>
+                <a class="btn btn-sm btn-white btn-block" href="login.html">登录</a></p>
+        </form>
+    </div>
+</div>
+</body>
+</html>
