@@ -1,0 +1,92 @@
+{% extends '/common/base_index.html' %}
+
+{% block content %}
+
+    <div class="table-responsive">
+
+        {#  待审项目信息 #}
+        <table class="table table-striped">
+
+            {# 标题栏 #}
+            <thead>
+                <tr>
+                    <th>待审项目信息</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>项目编号</td>
+                    <td>{{ project.id }}</td>
+                </tr>
+                <tr>
+                    <td>项目名称</td>
+                    <td>{{ project.name }}</td>
+                </tr>
+                <tr>
+                    <td>项目详情</td>
+                    <td>{{ project.info }}</td>
+                </tr>
+                <tr>
+                    <td>负责人</td>
+                    <td>{{ uname }}</td>
+                </tr>
+                <tr>
+                    <td>项目状态</td>
+                    <td>{{ project.status }}</td>
+                </tr>
+                <tr>
+                    <td>项目类型</td>
+                    <td>{{ project.work_type }}</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+
+        {#  历史审核信息 #}
+        {% if flag > 0 %}
+            <table class="table table-striped">
+
+            {# 标题栏 #}
+            <thead>
+                <tr>
+                    <th>项目编号</th>
+                    <th>审核人</th>
+                    <th>审核描述</th>
+                    <th>状态</th>
+                </tr>
+            </thead>
+
+            {% for history in histories %}
+                <tbody>
+                <tr>
+                    <td>{{ history.pid }}</td>
+                    <td>{{ history.uid }}</td>
+                    <td>{{ history.info }}</td>
+                    <td>{{ history.status }}</td>
+                </tr>
+
+            </tbody>
+            {% endfor %}
+
+        </table>
+        {% endif %}
+
+
+            {#  项目审核单 #}
+            <form action="?pid={{ project.id }}" method="post">
+                <label>审核描述</label> <textarea name="info" rows="3" cols="20"></textarea>
+                <select name="status">
+                    <option value="24">重新修改</option>
+                    <option value="23">审核通过</option>
+                </select>
+                <input type="submit" value="提交">
+            </form>
+
+        </form>
+
+    </div>
+
+{% endblock %}

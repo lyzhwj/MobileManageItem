@@ -1,0 +1,108 @@
+{% extends '/common/base_index.html' %}
+
+{% block title %}
+移动管理系统
+{% endblock %}
+
+{% block  table_title%}
+待审核工作列表
+{% endblock  %}
+
+{% block content %}
+
+    <div class="table-responsive">
+
+                    <table class="table table-striped">
+
+                        {# 标题栏 #}
+                        <thead>
+                        <tr>
+                            <th>工作人</th>
+                            <th>工作描述</th>
+                            <th>计划编号</th>
+                            <th>工作类别</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+
+                        {# 内容 #}
+                        <tbody>
+                        {% for project in paginate.items %}
+
+                            <tr>
+
+                                <td>{{ project.name }}</td>
+
+                                <td>{{ project.info }}</td>
+                                <td>{{ project.id }}</td>
+                                <td>{{ project.work_type }}</td>
+                                <td>{{ project.status }}</td>
+                                <td><a href="/operate?pid={{ project.id }}">前往操作</a></td>
+                            </tr>
+
+                        {% endfor %}
+
+
+
+
+                        </tbody>
+                    </table>
+
+                    {# 页面导航栏 #}
+                    <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
+                        <ul class="pagination">
+                            <li class="paginate_button previous disabled" id="DataTables_Table_0_previous"><a href="#"
+                                                                                                              aria-controls="DataTables_Table_0"
+                                                                                                              data-dt-idx="0"
+                                                                                                              tabindex="0">Previous</a>
+                            </li>
+                            <li class="paginate_button active"><a href="#" aria-controls="DataTables_Table_0"
+                                                                  data-dt-idx="1" tabindex="0">1</a></li>
+                            <li class="paginate_button "><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="2"
+                                                            tabindex="0">2</a></li>
+                            <li class="paginate_button "><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="3"
+                                                            tabindex="0">3</a></li>
+                            <li class="paginate_button "><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="4"
+                                                            tabindex="0">4</a></li>
+                            <li class="paginate_button "><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="5"
+                                                            tabindex="0">5</a></li>
+                            <li class="paginate_button "><a href="#" aria-controls="DataTables_Table_0" data-dt-idx="6"
+                                                            tabindex="0">6</a></li>
+                            <li class="paginate_button next" id="DataTables_Table_0_next"><a href="#"
+                                                                                             aria-controls="DataTables_Table_0"
+                                                                                             data-dt-idx="7"
+                                                                                             tabindex="0">Next</a>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                </div>
+
+{% endblock %}
+
+
+<body>
+    <h2>书籍信息</h2>
+    {% for b in paginate.items %}
+        编号：{{ b.id }}
+        书名：{{ b.name }}
+    <br>
+    {% endfor %}
+    总页数：{{ paginate.pages }}
+    数据总条数:{{ paginate.total }}
+    当前页数:{{ paginate.page }}
+    <a href="/booklist/?page=1">首页</a>
+    {% if paginate.has_prev %}
+        <a href="/booklist/?page={{ paginate.prev_num }}">上一页</a>
+    {% endif %}
+    {% if paginate.has_next %}
+        <a href="/booklist/?page={{ paginate.next_num }}">下一页</a>
+    {% endif %}
+    <a href="/booklist/?page={{paginate.pages}}">尾页</a>
+    页码:
+    {% for i in paginate.iter_pages() %}
+    <a href="/booklist/?page={{ i }}">{{ i }}</a>
+    {% endfor %}
+</body>
