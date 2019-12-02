@@ -1,0 +1,124 @@
+{% extends "index.html" %}
+{% block content %}
+    <form class="form-horizontal" method="post" action="/addproject/">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">项目编号：</label>
+                    <div class="col-sm-6">
+                        <select name="num" id="status" class="form-control">
+                            <option value="1" selected>1</option>
+                            <option value="0">Disabled</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">所属类别：</label>
+                    <div class="col-sm-6">
+                        <select name="cls" id="status" class="form-control">
+                            <option value="1" selected>工程项目</option>
+                            <option value="0">Disabled</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">负责人：</label>
+                    <div class="col-sm-6">
+                        <input class="form-control" name="principal">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">预计启动时间：</label>
+                    <div class="col-sm-6">
+                        <input type="date" class="form-control" name="pre_ini_data">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">实际启动时间：</label>
+                    <div class="col-sm-6">
+                        <input class="form-control" name="rea_ini_data">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">总预算：</label>
+                    <div class="col-sm-6">
+                        <input class="form-control" name="total_account" onblur="ischeckNum()">
+                        <span id="span"></span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">项目名称：</label>
+                    <div class="col-sm-6">
+                        <input class="form-control" name="pro_name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">承担省份：</label>
+                    <div class="col-sm-6">
+                        <input class="form-control" name="provinces">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">联系电话：</label>
+                    <div class="col-sm-6">
+                        <input class="form-control" name="tel">
+                    </div>
+                </div>
+                   <div class="form-group">
+                    <label class="col-sm-3 control-label">预计结束时间：</label>
+                    <div class="col-sm-6">
+                        <input type="date" class="form-control" name="pre_end_data">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">实际结束时间：</label>
+                    <div class="col-sm-6">
+                        <input class="form-control" name="rea_end_data">
+                    </div>
+                </div>
+            </div>
+             <div class="col-md-3  col-md-offset-4">
+                <button type="submit" class="btn btn-default">确认新增</button>&nbsp;&nbsp;&nbsp;
+                <a class="btn btn-default" href="/addproject/">重置</a>&nbsp;&nbsp;&nbsp;
+                <a class="btn btn-default" href="/planlist/">返回</a>
+        </div>
+        </div>
+
+
+
+
+    </form>
+
+    <script>
+     function ischeckNum() {
+         var total_account = $('input[name="total_account"]').val()
+         if (total_account){
+               if (isNaN(total_account)) {
+                 $('#span').html("不是数字")
+             }
+         }
+
+     }
+    </script>
+
+
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
