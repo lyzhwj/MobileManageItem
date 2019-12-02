@@ -1,0 +1,60 @@
+{% extends '/index.html' %}
+{% block content %}
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+            <h2>类别项目管理</h2>
+            <ol class="breadcrumb">
+                <li class="active">
+                    <strong>新增项目类别</strong>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-10" style="width:100%">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <form method="post" class="form-horizontal">
+                            <table style="border-collapse:separate; border-spacing:0px 20px;">
+                                <tr>
+                                    <td><label class="col-sm-2 control-label" style="width:100%">父项目类别</label></td>
+                                    <td>
+                                        <div class="col-lg-10"><input type="text" class="form-control"
+                                                                      style="width: 200px">
+                                        </div>
+                                    </td>
+                                    <td><label class="col-sm-2 control-label" style="width:100%">类别名称</label></td>
+                                    <td>
+                                        <div class="col-lg-10"><input type="text" class="form-control"
+                                                                      style="width: 200px">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        <div class="form-group">
+                                            <div class="col-sm-4 col-sm-offset-2">
+                                                <button class="btn btn-white" type="reset">重置</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <div class="col-sm-4 col-sm-offset-2">
+                                                <button class="btn btn-primary" type="button" onclick="save()">提交
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
