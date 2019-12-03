@@ -36,8 +36,8 @@ class Project(db.Model):
     uid = Column(ForeignKey('t_user.id'), index=True)
     status = Column(INTEGER(11))
 
-    t_user = relationship('TUser')
-    t_user1 = relationship('TUser', secondary='t_sp')
+    t_user = relationship('User')
+    t_user1 = relationship('User', secondary='t_sp')
 
 
 class History(db.Model):
@@ -48,9 +48,8 @@ class History(db.Model):
     info = Column(String(500))
     staus = Column(INTEGER(11))
     uid = Column(ForeignKey('t_user.id'), index=True)
-
-    t_project = relationship('TProject')
-    t_user = relationship('TUser')
+    t_project = relationship('Project')
+    t_user = relationship('User')
 
 
 t_t_sp = Table(

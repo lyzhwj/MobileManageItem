@@ -19,12 +19,12 @@ def login_view():
         return render_template('login.html')
     else:
         uname = request.values.get('uname')
-        user = User.query.filter_by(name=uname).first()
+        user = User.query.filter_by(uname=uname).first()
         if user:
             password = request.values.get('password')
             if user.password == password:
                 session['user'] = user.name
-                return redirect('/index/')
+                return render_template('index.html')
             else:
                 return render_template('login.html')
         else:
@@ -38,7 +38,7 @@ def register_view():
         return render_template('register.html')
     else:
         uname = request.values.get('uname')
-        user = User.query.filter_by(name=uname).first()
+        user = User.query.filter_by(uname=uname).first()
         if not user:
             password = request.values.get('password')
             user = User(name=uname, password=password, regis_date=datetime.now)
@@ -51,12 +51,12 @@ def register_view():
 
 @category_bp.route('/index01/')
 def index_01_view():
-    return render_template('index_01.html')
+    return render_template('category_add.html')
 
 
 @category_bp.route('/index02/')
 def index_02_view():
-    return render_template('index_02.html')
+    return render_template('category_list.html')
 
 
 @user_bp.route('/login/')
