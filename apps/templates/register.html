@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,13 +25,16 @@
         <form class="m-t" role="form" action="/login/" method="post">
             {{ csrf_token }}
             <div class="form-group">
-                <input type="text" class="form-control" placeholder="用户名" required="" name="uname">
+                <input type="text" class="form-control" placeholder="用户名" id="uname" name="uname">
+                <span class="error_tip unameSpan"></span>
             </div>
             <div class="form-group">
-                <input type="password" class="form-control" placeholder="密码" required="" name="password">
+                <input type="password" class="form-control" placeholder="密码" id="pwd" name="pwd">
+                <span class="error_tip pwdSpan"></span>
             </div>
             <div class="form-group">
-                <input type="password" class="form-control" placeholder="确认密码" required="">
+                <input type="password" class="form-control" placeholder="确认密码" id="cpwd" name="cpwd">
+                <span class="error_tip cpwdSpan"></span>
             </div>
             <button type="submit" class="btn btn-primary block full-width m-b">注册</button>
             <p class="text-muted text-center"><small>已有账户?</small>
@@ -40,5 +42,24 @@
         </form>
     </div>
 </div>
+<script>
+    $(function () {
+        uname_err = false
+        pwd_err = false
+        cpwd_err = false
+    })
+
+    $('#uname').blur(function () {
+        check_uname()
+    })
+    $('#pwd').blur(function () {
+        check_pwd
+    })
+    $('#cpwd').blur(function () {
+        check_cpwd()
+    })
+
+
+</script>
 </body>
 </html>

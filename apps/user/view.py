@@ -59,6 +59,7 @@ def index_02_view():
     return render_template('category_list.html')
 
 
+
 @user_bp.route('/login/')
 def login_out_view():
     '''退出'''
