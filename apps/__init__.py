@@ -19,6 +19,9 @@ app.register_blueprint(category_bp)
 from apps.addproject import addproject
 app.register_blueprint(addproject)
 
+from apps.verifyList import verify
+app.register_blueprint(verify)
+
 
 @app.route('/')
 def hello_world():
