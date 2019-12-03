@@ -4,7 +4,7 @@ from apps import app
 from apps.model import db
 
 manager = Manager(app)
-migrate = Migrate(app, db)
+migrate = Migrate(app, db,render_as_batch=True, compare_type=True)
 
 manager.add_command('db', MigrateCommand)
 
