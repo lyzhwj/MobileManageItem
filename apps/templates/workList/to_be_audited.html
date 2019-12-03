@@ -17,8 +17,9 @@
                         {# 标题栏 #}
                         <thead>
                         <tr>
-                            <th>工作人</th>
-                            <th>工作描述</th>
+                            <th>项目名称</th>
+                            <th>项目描述</th>
+                            <th>负责人</th>
                             <th>计划编号</th>
                             <th>工作类别</th>
                             <th>状态</th>
@@ -33,12 +34,13 @@
                             <tr>
 
                                 <td>{{ project.name }}</td>
-
+                                <td>{{ project.name }}</td>
                                 <td>{{ project.info }}</td>
                                 <td>{{ project.id }}</td>
-                                <td>{{ project.work_type }}</td>
-                                <td>{{ project.status }}</td>
-                                <td><a href="/operate?pid={{ project.id }}">前往操作</a></td>
+                                <td>{{ project.uid | userName }}</td>
+                                <td>{{ project.work_type | dictFilter}}</td>
+                                <td>{{ project.status | dictFilter }}</td>
+                                <td><a href="/detail?pid={{ project.id }}">前往查看</a></td>
                             </tr>
 
                         {% endfor %}

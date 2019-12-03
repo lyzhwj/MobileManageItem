@@ -1,0 +1,73 @@
+{% extends '/common/base_index.html' %}
+
+{% block content %}
+
+    <div class="table-responsive">
+
+        {#  待审项目信息 #}
+        <table class="table table-striped">
+            {% for foo in project.items %}
+                {{ foo.value }}
+            {% endfor %}
+
+            <tr>
+                <td>项目编号</td>
+                <td>{{ project.id }}</td>
+            </tr>
+
+            <tr>
+                <td>项目名称</td>
+                <td>{{ project.name }}</td>
+            </tr>
+            <tr>
+                <td>负责人</td>
+                <td>{{ project.uid | userName }}</td>
+            </tr>
+            <tr>
+                <td>项目状态</td>
+                <td>{{ project.status | dictFilter }}</td>
+            </tr>
+            <tr>
+                <td>项目类型</td>
+                <td>{{ project.work_type | dictFilter }}</td>
+            </tr>
+            <tr>
+                <td><label for="info">项目详情</label></td>
+                <td><TEXTAREA id="info" readonly> {{ project.info }}</TEXTAREA></td>
+            </tr>
+        </table>
+
+
+        {#  历史审核信息 #}
+        {% if flag > 0 %}
+            <table class="table table-striped">
+
+                {# 标题栏 #}
+                <thead>
+                <tr>
+                    <th>项目编号</th>
+                    <th>审核人</th>
+                    <th>审核描述</th>
+                    <th>状态</th>
+                </tr>
+                </thead>
+
+                {% for history in histories %}
+                    <tbody>
+                    <tr>
+                        <td>{{ history.pid }}</td>
+                        <td>{{ history.uid | userName }}</td>
+                        <td>{{ history.info }}</td>
+                        <td>{{ history.status | dictFilter }}</td>
+                    </tr>
+
+                    </tbody>
+                {% endfor %}
+
+            </table>
+        {% endif %}
+
+
+    </div>
+
+{% endblock %}

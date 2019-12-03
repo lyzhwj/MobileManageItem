@@ -1,7 +1,7 @@
 from flask import render_template, request
 
 from apps.addproject import addproject
-
+from apps.model import Project
 
 @addproject.route('/addproject/', methods=("GET", "POST"))
 def AddProject():
