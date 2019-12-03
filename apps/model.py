@@ -1,71 +1,59 @@
 # coding: utf-8
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import ForeignKey, String
-from sqlalchemy.dialects.mysql import INTEGER
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
 from apps import app
 
 db = SQLAlchemy(app)
-Base = declarative_base()
-metadata = Base.metadata
 
 
-class TDict(db.Model):
+class Dictory(db.Model):
     __tablename__ = 't_dict'
 
-    name = db.Column(String(32), primary_key=True)
-    pid = db.Column(INTEGER(11), primary_key=True)
+    name = db.Column(db.String(32), primary_key=True)
+    pid = db.Column(db.INTEGER, primary_key=True)
 
 
-class TUser(db.Model):
+class User(db.Model):
     __tablename__ = 't_user'
 
-    id = db.Column(INTEGER(11), primary_key=True)
-    uname = db.Column(String(32))
-    nick_name = db.Column(String(32))
-    pwd = db.Column(String(32))
-    rid = db.Column(INTEGER(2))
-    is_used = db.Column(INTEGER(2))
+    id = db.Column(db.INTEGER, primary_key=True)
+    uname = db.Column(db.String(32))
+    nick_name = db.Column(db.String(32))
+    pwd = db.Column(db.String(32))
+    rid = db.Column(db.INTEGER)
+    is_used = db.Column(db.INTEGER)
 
 
-class TProject(db.Model):
+class Project(db.Model):
     __tablename__ = 't_project'
 
-    id = db.Column(INTEGER(11), primary_key=True)
-    name = db.Column(String(32))
-    info = db.Column(String(32))
-    uid = db.Column(ForeignKey('t_user.id'), index=True)
-    status = db.Column(INTEGER(11))
-    work_type = db.Column(String(32))
-    t_user = relationship('TUser')
-    t_user1 = relationship('TUser', secondary='t_sp')
+    id = db.Column(db.INTEGER, primary_key=True)
+    # ptime = db.Column(DATETIME, default=datetime.now())
+    name = db.Column(db.String(32))
+    info = db.Column(db.String(32))
+    uid = db.Column(db.ForeignKey('t_user.id'), index=True)
+    status = db.Column(db.INTEGER)
+    work_type = db.Column(db.String(32))
+    t_user = relationship('User')
+    t_user1 = relationship('User', secondary='t_sp')
 
 
-class THistory(db.Model):
+class History(db.Model):
     __tablename__ = 't_history'
 
-    id = db.Column(INTEGER(11), primary_key=True)
-    pid = db.Column(ForeignKey('t_project.id'), index=True)
-    info = db.Column(String(500))
-    status = db.Column(INTEGER(11))
-    uid = db.Column(ForeignKey('t_user.id'), index=True)
+    id = db.Column(db.INTEGER, primary_key=True)
+    pid = db.Column(db.ForeignKey('t_project.id'), index=True)
+    info = db.Column(db.String(500))
+    status = db.Column(db.INTEGER)
+    uid = db.Column(db.ForeignKey('t_user.id'), index=True)
 
-    t_project = relationship('TProject')
-    t_user = relationship('TUser')
+    t_project = relationship('Project')
+    t_user = relationship('User')
 
 
-class T_t_sp(db.Model):
-    __tablename__ = 't_sp'
-    pid = db.Column(ForeignKey('t_project.id'), primary_key=True, nullable=False)
-    uid = db.Column(ForeignKey('t_user.id'), primary_key=True, nullable=False, index=True)
-
-    t_project = relationship('TProject')
-    t_user = relationship('TUser')
-
-# t_t_sp = Table(
-#     't_sp', metadata,
-#     Column('pid', ForeignKey('t_project.id'), primary_key=True, nullable=False),
-#     Column('uid', ForeignKey('t_user.id'), primary_key=True, nullable=False, index=True)
-# )
+t_t_sp = db.Table(
+    't_sp', db.metadata,
+    db.Column('pid', db.ForeignKey('t_project.id'), primary_key=True, nullable=False),
+    db.Column('uid', db.ForeignKey('t_user.id'), primary_key=True, nullable=False, index=True)
+)

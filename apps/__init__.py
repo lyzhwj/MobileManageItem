@@ -3,7 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 
 from apps import config
 
-
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = config.SQLALCHEMY_DATABASE_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
@@ -16,13 +15,7 @@ app.register_blueprint(wkl)
 
 db = SQLAlchemy(app)
 
-from apps.model import TUser
-
 
 @app.route('/')
 def hello_world():
     return render_template('base_index.html')
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
