@@ -5,7 +5,7 @@ USERNAME = 'root'
 PASSWORD = '123'
 HOST = '106.13.93.45'
 PORT = 3306
-DATABASE = 'flask'
+DATABASE = 'moblie'
 
 
 SQLALCHEMY_DATABASE_URI = "{}+{}://{}:{}@{}:{}/{}?charset=utf8mb4".format(DIALECT, DRIVER, USERNAME, PASSWORD, HOST,PORT,DATABASE)

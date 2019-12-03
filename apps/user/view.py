@@ -1,22 +1,5 @@
-<<<<<<< HEAD
-=======
-from flask import render_template
-from flask_sqlalchemy import SQLAlchemy
-
-from apps import app
-from apps.user import user_bp
-
->>>>>>> dfw
-'''
-page: url传参
-pid: url传参
-status: url传参
-uid: 通过session获取uid,进行是否已登录验证，可以写一个验证函数
-'''
-
 from datetime import datetime
 from flask import render_template, request, redirect, session, url_for
-
 from apps.user import user_bp, category_bp
 from apps.model import User, db
 

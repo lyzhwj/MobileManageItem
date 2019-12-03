@@ -3,16 +3,11 @@ from apps import app
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy(app)
-
-
 class Dictory(db.Model):
     __tablename__ = 't_dict'
-
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(32))
     pid = db.Column(db.Integer)
-
-
 
 class User(db.Model):
     __tablename__ = 't_user'
@@ -32,10 +27,10 @@ class Project(db.Model):
     name = db.Column(db.String(32))
     catgory = db.Column(db.String(33))
     uid = db.Column(db.ForeignKey('t_user.id'), index=True)
-    pre_ini_data = db.Column(db.DateTime) #预计启动时间
-    rea_ini_data = db.Column(db.DateTime) #实际启动时间
-    pre_end_data = db.Column(db.DateTime) #预计结束时间
-    rea_end_data = db.Column(db.DateTime) #实际结束时间
+    pre_ini_data = db.Column(db.DateTime)  # 预计启动时间
+    rea_ini_data = db.Column(db.DateTime)  # 实际启动时间
+    pre_end_data = db.Column(db.DateTime)  # 预计结束时间
+    rea_end_data = db.Column(db.DateTime)  # 实际结束时间
     status = db.Column(db.Integer)
     total_account = db.Column(db.FLOAT)
 
@@ -50,7 +45,7 @@ class History(db.Model):
     pid = db.Column(db.ForeignKey('t_project.id'), index=True)
     info = db.Column(db.String(500))
     staus = db.Column(db.Integer)
-    opa_time = db.Column(db.DateTime) # 操作时间
+    opa_time = db.Column(db.DateTime)  # 操作时间
     uid = db.Column(db.ForeignKey('t_user.id'), index=True)
 
     t_project = db.relationship('Project')
@@ -59,6 +54,8 @@ class History(db.Model):
 
 t_t_sp = db.Table(
     't_sp', db.metadata,
-    db.Column('pid', db.ForeignKey('t_project.id'), primary_key=True, nullable=False),
-    db.Column('uid', db.ForeignKey('t_user.id'), primary_key=True, nullable=False, index=True)
+    db.Column('pid', db.ForeignKey('t_project.id'),
+              primary_key=True, nullable=False),
+    db.Column('uid', db.ForeignKey('t_user.id'),
+              primary_key=True, nullable=False, index=True)
 )
