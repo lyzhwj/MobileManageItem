@@ -29,15 +29,15 @@
                 </tr>
                 <tr>
                     <td>负责人</td>
-                    <td>{{ uname }}</td>
+                    <td>{{ project.uid | userName }}</td>
                 </tr>
                 <tr>
                     <td>项目状态</td>
-                    <td>{{ project.status }}</td>
+                    <td>{{ project.status | dictFilter }}</td>
                 </tr>
                 <tr>
                     <td>项目类型</td>
-                    <td>{{ project.work_type }}</td>
+                    <td>{{ project.work_type | dictFilter }}</td>
                 </tr>
 
             </tbody>
@@ -63,9 +63,9 @@
                 <tbody>
                 <tr>
                     <td>{{ history.pid }}</td>
-                    <td>{{ history.uid }}</td>
+                    <td>{{ history.uid | userName }}</td>
                     <td>{{ history.info }}</td>
-                    <td>{{ history.status }}</td>
+                    <td>{{ history.status | dictFilter }}</td>
                 </tr>
 
             </tbody>
@@ -77,15 +77,16 @@
 
             {#  项目审核单 #}
             <form action="?pid={{ project.id }}" method="post">
-                <label>审核描述</label> <textarea name="info" rows="3" cols="20"></textarea>
-                <select name="status">
+                <label for="1">审核描述</label><br>
+                <textarea name="info" rows="3" cols="20" id="1"></textarea><br>
+                <label for="2">审核结果</label>
+                <select name="status" id="2">
                     <option value="24">重新修改</option>
-                    <option value="23">审核通过</option>
-                </select>
+                    <option value="26">审核通过</option>
+                    <option value="25">终止项目</option>
+                </select><br>
                 <input type="submit" value="提交">
             </form>
-
-        </form>
 
     </div>
 

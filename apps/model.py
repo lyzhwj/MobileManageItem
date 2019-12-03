@@ -13,6 +13,7 @@ class Dictory(db.Model):
     pid = db.Column(db.Integer)
 
 
+
 class User(db.Model):
     __tablename__ = 't_user'
 
