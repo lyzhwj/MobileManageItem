@@ -2,8 +2,8 @@ DEBUG = True
 DIALECT = 'mysql'
 DRIVER = 'pymysql'
 USERNAME = 'root'
-PASSWORD = 'root'
-HOST = '192.168.52.53'
+PASSWORD = '123'
+HOST = '106.13.93.45'
 PORT = 3306
 DATABASE = 'flask'
 

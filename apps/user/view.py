@@ -2,7 +2,7 @@ from flask import render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 
 from apps import app
-from apps.model import TProject, THistory
+
 from apps.user import user_bp
 
 '''
