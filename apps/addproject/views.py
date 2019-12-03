@@ -39,7 +39,7 @@ def AddProject():
         }
 
         if all(context.values()):
-            Project.
+
 
            pass
         else:

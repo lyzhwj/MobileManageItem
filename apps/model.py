@@ -26,12 +26,13 @@ class User(db.Model):
     rid = Column(INTEGER(2))
     is_used = Column(INTEGER(2))
 
+
 class Project(db.Model):
     __tablename__ = 't_project'
 
     id = db.Column(INTEGER(11), primary_key=True)
     name = db.Column(String(32))
-    catgory= db.Column(String(32))
+    catgory = db.Column(String(32))
     uid = db.Column(ForeignKey('t_user.id'), index=True)
     pre_ini_data = db.DateTime()
     pre_end_data = db.DateTime()
@@ -39,6 +40,7 @@ class Project(db.Model):
     rea_end_data = db.DateTime()
     status = db.Column(INTEGER(11))
     total_account = db.Column(db.FLOAT)
+
     t_user = relationship('TUser')
     t_user1 = relationship('TUser', secondary='t_sp')
 
