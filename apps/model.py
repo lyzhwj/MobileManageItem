@@ -1,7 +1,4 @@
 # coding: utf-8
-from sqlalchemy import Column, ForeignKey, String, Table
-from sqlalchemy.dialects.mysql import INTEGER
-from sqlalchemy.orm import relationship
 from apps import app
 from flask_sqlalchemy import SQLAlchemy
 
@@ -11,49 +8,54 @@ db = SQLAlchemy(app)
 class Dictory(db.Model):
     __tablename__ = 't_dict'
 
-    id = Column(INTEGER(11), primary_key=True)
-    name = Column(String(32))
-    pid = Column(INTEGER(11))
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(32))
+    pid = db.Column(db.Integer)
 
 
 class User(db.Model):
     __tablename__ = 't_user'
 
-    id = Column(INTEGER(11), primary_key=True)
-    uname = Column(String(32))
-    nick_name = Column(String(32))
-    pwd = Column(String(32))
-    rid = Column(INTEGER(2))
-    is_used = Column(INTEGER(2))
+    id = db.Column(db.Integer, primary_key=True)
+    uname = db.Column(db.String(32))
+    nick_name = db.Column(db.String(32))
+    pwd = db.Column(db.String(32))
+    rid = db.Column(db.Integer)
+    is_used = db.Column(db.Integer)
 
 
 class Project(db.Model):
     __tablename__ = 't_project'
 
-    id = Column(INTEGER(11), primary_key=True)
-    name = Column(String(32))
-    info = Column(String(32))
-    uid = Column(ForeignKey('t_user.id'), index=True)
-    status = Column(INTEGER(11))
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(32))
+    catgory = db.Column(db.String(32))
+    uid = db.Column(db.ForeignKey('t_user.id'), index=True)
+    pre_ini_data = db.DateTime()
+    rea_ini_data = db.DateTime()
+    rea_end_data = db.DateTime()
+    status = db.Column(db.Integer)
+    total_account = db.Column(db.FLOAT)
 
-    t_user = relationship('User')
-    t_user1 = relationship('User', secondary='t_sp')
+    t_user = db.relationship('TUser')
+    t_user1 = db.relationship('TUser', secondary='t_sp')
 
 
 class History(db.Model):
     __tablename__ = 't_history'
 
-    id = Column(INTEGER(11), primary_key=True)
-    pid = Column(ForeignKey('t_project.id'), index=True)
-    info = Column(String(500))
-    staus = Column(INTEGER(11))
-    uid = Column(ForeignKey('t_user.id'), index=True)
-    t_project = relationship('Project')
-    t_user = relationship('User')
+    id = db.Column(db.Integer, primary_key=True)
+    pid = db.Column(db.ForeignKey('t_project.id'), index=True)
+    info = db.Column(db.String(500))
+    staus = db.Column(db.Integer)
+    uid = db.Column(db.ForeignKey('t_user.id'), index=True)
+
+    t_project = db.relationship('Project')
+    t_user = db.relationship('User')
 
 
-t_t_sp = Table(
+t_t_sp = db.Table(
     't_sp', db.metadata,
-    Column('pid', ForeignKey('t_project.id'), primary_key=True, nullable=False),
-    Column('uid', ForeignKey('t_user.id'), primary_key=True, nullable=False, index=True)
+    db.Column('pid', db.ForeignKey('t_project.id'), primary_key=True, nullable=False),
+    db.Column('uid', db.ForeignKey('t_user.id'), primary_key=True, nullable=False, index=True)
 )

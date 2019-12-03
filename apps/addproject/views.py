@@ -40,6 +40,7 @@ def AddProject():
 
         if all(context.values()):
 
+
            pass
         else:
            msg="信息不全"
