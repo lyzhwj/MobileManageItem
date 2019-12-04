@@ -6,7 +6,6 @@ app = Flask(__name__)
 app.config.from_object(config)
 app.config['SQLALCHEMY_DATABASE_URI'] = config.SQLALCHEMY_DATABASE_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-from apps import  model
 '''------------------------wj-----------------'''
 from apps.user import user_bp, category_bp
 app.register_blueprint(user_bp)
@@ -24,7 +23,13 @@ from apps.verifyList import verify
 app.register_blueprint(verify)
 
 
+
+
+app.config['SECRET_KEY'] = '123'
+
 @app.route('/')
 def hello_world():
-    return render_template('index.html')
+    # return render_template('login.html')
+    return redirect('/login/')
+
 
