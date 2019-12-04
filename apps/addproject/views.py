@@ -1,6 +1,6 @@
 import re
 
-from flask import render_template, request
+from flask import render_template, request, redirect
 
 from apps.addproject import addproject
 from apps.model import Project, db, Dictionary, Province, Officer
@@ -19,13 +19,14 @@ def AddProject():
             project.pre_end_date = str(project.pre_end_date).split(' ')[0]
             project.rea_ini_date = str(project.rea_ini_date).split(' ')[0]
             project.rea_end_date = str(project.rea_end_date).split(' ')[0]
-            return render_template('addproject.html',project=project, officer=officer)
+            return render_template('addproject.html', project=project, officer=officer, pid=pid)
 
         p_num = Dictionary.query.filter(Dictionary.pid < 13).all()
         provinces = Province.query.filter().all()
         return render_template('addproject.html', p_num=p_num, provinces=provinces)
     # POST请求
     if request.method == "POST":
+        pid = request.args.get('pid', 0)
         officers = request.form.get("officers")  # 审批人
         cls = request.form.get("cls")  # 项目类别
         pre_ini_date = request.form.get("pre_ini_date")
@@ -37,7 +38,22 @@ def AddProject():
         info = request.form.get("info")
         pre_end_date = request.form.get("pre_end_date")
         rea_end_date = request.form.get("rea_end_date")
-        msg = "1"
+        if pid:
+            project = Project.query.get(pid)
+            project.cls = cls
+            project.pre_ini_date = pre_ini_date
+            project.rea_ini_date = rea_ini_date
+            project.total_account = total_account
+            project.pname = pro_name
+            project.province = province
+            project.tel = tel
+            project.info = info
+            project.pre_end_date = pre_end_date
+            project.rea_end_date = rea_end_date
+            print(pid)
+            print(project.pname)
+            db.session.commit()
+            return redirect('/planlist/')
         context = {
             "officers": officers,
             # "num": num,
@@ -56,7 +72,7 @@ def AddProject():
         if all(context.values()):
             project = Project(pname=pro_name, catgory=cls, uid=1, tel=tel, province=province,
                               total_account=total_account, pre_ini_date=pre_ini_date, rea_ini_date=rea_ini_date,
-                              pre_end_date=pre_end_date, rea_end_date=rea_end_date, info=info)
+                              pre_end_date=pre_end_date, rea_end_date=rea_end_date, info=info, status=21)
             db.session.add(project)
             db.session.commit()
 
@@ -71,13 +87,12 @@ def AddProject():
             msg = "信息不全"
             return msg
 
-    return "提交成功"
+    return redirect('/planlist/')
 
 
 @addproject.route('/planlist/')
 def PlanList():
-    project = Project.query.filter(Project.uid == 1).all()
-    print(project[0].id)
+    project = Project.query.filter(Project.status == 21, Project.uid == 1).all()
     officer = Officer.query.filter(Officer.pid == project[0].id).all()
 
     return render_template('planlist.html', project=project, officer=officer)

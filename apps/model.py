@@ -43,7 +43,7 @@ class Project(db.Model):
     info = db.Column(db.String(256))
     status = db.Column(db.Integer)
 
-    t_user = db.relationship('User')
+    user = db.relationship('User')
 
 
 class History(db.Model):
