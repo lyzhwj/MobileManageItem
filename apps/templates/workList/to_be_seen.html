@@ -17,12 +17,16 @@
             {# 标题栏 #}
             <thead>
             <tr>
+                <th>项目编号</th>
                 <th>项目名称</th>
-                <th>项目描述</th>
+                <th>所属类别</th>
+                <th>承担省份</th>
                 <th>负责人</th>
-                <th>计划编号</th>
-                <th>工作类别</th>
+                <th>联系电话</th>
+                <th>预计启动时间</th>
+                <th>预计结束时间</th>
                 <th>状态</th>
+                <th>总预算</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -30,21 +34,21 @@
             {# 内容 #}
             <tbody>
             {% for project in paginate.items %}
-
                 <tr>
-
-                    <td>{{ project.name }}</td>
-                    <td>{{ project.name }}</td>
-                    <td>{{ project.info }}</td>
                     <td>{{ project.id }}</td>
+                    <td>{{ project.pname }}</td>
+                    <td>{{ project.catgory }}</td>
+                    <td>{{ project.province }}</td>
                     <td>{{ project.uid | userName }}</td>
-                    <td>{{ project.work_type | dictFilter }}</td>
+                    <td>{{ project.tel }}</td>
+                    <td>{{ project.pre_ini_date }}</td>
+                    <td>{{ project.pre_end_date }}</td>
                     <td>{{ project.status | dictFilter }}</td>
-                    <td><a href="/detail?pid={{ project.id }}">前往查看</a></td>
+                    <td>{{ project.total_account }}</td>
+                    <td><a href="/check?pid={{ project.id }}">前往查看</a></td>
                 </tr>
-
+                </tr>
             {% endfor %}
-
 
             </tbody>
         </table>

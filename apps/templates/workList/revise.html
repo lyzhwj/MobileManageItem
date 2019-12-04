@@ -1,88 +1,147 @@
 {% extends '/common/base_index.html' %}
 
 {% block content %}
+    {#  待审项目信息 #}
+    <form form action="?pid={{ project.id }}" method="post" class="form-horizontal">
 
-    <div class="table-responsive">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">项目编号：</label>
+                    <div class="col-sm-6">
+                        <text class="footable-visible" style="line-height: 30px">{{ project.id }}</text>
+                    </div>
+                </div>
 
-        {#  待审项目信息 #}
-        <form method="post">
-            <table class="table table-striped">
-                {% for foo in project.items %}
-                    {{ foo.value }}
-                {% endfor %}
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">项目类别：</label>
+                    <div class="col-sm-6">
+                        <text style="line-height: 30px">{{ project.catgory }}</text>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">总预算：</label>
+                    <div class="col-sm-6">
+                        <text style="line-height: 30px">{{ project.total_account }}</text>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">预计启动时间：</label>
+                    <div class="col-sm-6">
+                        <text style="line-height: 30px">{{ project.pre_ini_date }}</text>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">负责人：</label>
+                    <div class="col-sm-6">
+                        <text style="line-height: 30px">{{ project.uid | userName }}</text>
+                    </div>
+                </div>
+                <br><br>
+                <div class="row ">
+                    <label class="col-md-3 control-label">项目详情：</label>
+                    <div class="col-sm-6 ">
+                        <textarea class="col-md-offset-0" name="info" cols="120" rows="10">{{ project.info }}</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">项目名称：</label>
+                    <div class="col-sm-6">
+                        <text style="line-height: 30px">{{ project.pname }}</text>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">承担省份：</label>
+                    <div class="col-sm-6">
+                        <text style="line-height: 30px">{{ project.province }}</text>
+                    </div>
+                </div>
 
 
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">项目状态：</label>
+                    <div class="col-sm-6">
+                        <text style="line-height: 30px">{{ project.status | dictFilter }}</text>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">预计结束时间：</label>
+                    <div class="col-sm-6">
+                        <text style="line-height: 30px">{{ project.pre_end_date }}</text>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">联系电话：</label>
+                    <div class="col-sm-6">
+                        <text style="line-height: 30px">{{ project.tel }}</text>
+                    </div>
+                </div>
 
-                <tr>
-                    <td>项目编号</td>
-                    <td>{{ project.id }}</td>
-                </tr>
+            </div>
 
-                <tr>
-                    <td>项目名称</td>
-                    <td>{{ project.name }}</td>
-                </tr>
-                <tr>
-                    <td>负责人</td>
-                    <td>{{ project.uid | userName }}</td>
-                </tr>
-                <tr>
-                    <td>项目状态</td>
-                    <td>{{ project.status | dictFilter }}</td>
-                </tr>
-                <tr>
-                    <td>项目类型</td>
-                    <td>{{ project.work_type | dictFilter}}</td>
-                </tr>
-                <tr>
-                    <td><label for="info">项目详情</label></td>
-                    <td><textarea name="info" id="info" >{{ project.info }}</textarea></td>
-                </tr>
-            </table>
+        </div>
 
-
-            {#  历史审核信息 #}
-            {% if flag > 0 %}
+        历史审核信息
+        {% if flag > 0 %}
+            <div class="table-responsive">
                 <table class="table table-striped">
-
-                {# 标题栏 #}
-                <thead>
+                    <thead>
                     <tr>
                         <th>项目编号</th>
                         <th>审核人</th>
                         <th>审核描述</th>
                         <th>状态</th>
                     </tr>
-                </thead>
-
-                {% for history in histories %}
+                    </thead>
                     <tbody>
-                    <tr>
-                        <td>{{ history.pid }}</td>
-                        <td>{{ history.uid | userName }}</td>
-                        <td>{{ history.info }}</td>
-                        <td>{{ history.status | dictFilter }}</td>
-                    </tr>
+                    {% for history in histories %}
+                        <tr>
+                            <td>{{ history.pid }}</td>
+                            <td>{{ history.uid | userName }}</td>
+                            <td>{{ history.info }}</td>
+                            <td>{{ history.status | dictFilter }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+        <div class="row">
+            <div class="form-group">
+                <label class="col-md-3 control-label "
+                       style="width: 220px; padding-left: 125px">审核结果：</label>
+                <div class="col-sm-1">
+                    <div class="radio">
+                        <input type="radio" name="status" checked value="22"><span>重新提交</span>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    <div class="radio">
+                        <input type="radio" name="status" value="24"><span>保存内容</span>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    <div class="radio">
+                        <input type="radio" name="status" value="25"><span>终止项目</span>
+                    </div>
+                </div>
+                <br><br><br><br>
+                <div class="form-group">
+                    <label class="col-md-3 control-label " style="width: 220px;"></label>
+                    <div class="col-sm-1">
+                        <button class="ladda-button btn btn-info" data-style="slide-down">提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                </tbody>
-                {% endfor %}
-
-            </table>
-            {% endif %}
-
-           <select name="status" id="2">
-                <option value="22">重新提交</option>
-                <option value="24">保存内容</option>
-                <option value="25">终止项目</option>
-            </select><br>
-
-            <input type="submit" value="提交">
-        </form>
+    </form>
 
 
-
-
-
-    </div>
 
 {% endblock %}
