@@ -13,6 +13,7 @@ class Dictionary(db.Model):
     name = db.Column(db.String(32))
     pid = db.Column(db.Integer)
 
+
 class User(db.Model):
     __tablename__ = 't_user'
 
@@ -35,12 +36,14 @@ class Project(db.Model):
     rea_ini_date = db.Column(db.DateTime)  # 实际启动时间
     pre_end_date = db.Column(db.DateTime)  # 预计结束时间
     rea_end_date = db.Column(db.DateTime)  # 实际结束时间
-    update_date = db.Column(db.DateTime,default=datetime.now())  # update时间
-    status = db.Column(db.Integer)
+    update_date = db.Column(db.DateTime, default=datetime.now())  # update时间
+    province = db.Column(db.String(32))
+    tel = db.Column(db.String(32))
     total_account = db.Column(db.FLOAT)
+    info = db.Column(db.String(256))
+    status = db.Column(db.Integer)
 
-    t_user = db.relationship('TUser')
-    t_user1 = db.relationship('TUser', secondary='t_sp')
+    t_user = db.relationship('User')
 
 
 class History(db.Model):
@@ -50,11 +53,26 @@ class History(db.Model):
     pid = db.Column(db.ForeignKey('t_project.id'), index=True)
     info = db.Column(db.String(500))
     staus = db.Column(db.Integer)
-    opa_time = db.Column(db.DateTime,default=datetime.now())  # 操作时间
+    opa_time = db.Column(db.DateTime, default=datetime.now())  # 操作时间
     uid = db.Column(db.ForeignKey('t_user.id'), index=True)
 
     t_project = db.relationship('Project')
     t_user = db.relationship('User')
+
+
+class Province(db.Model):
+    __tablename__ = 't_province'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(32))
+
+
+class Officer(db.Model):
+    __tablename__ = 't_officer'
+    id = db.Column(db.Integer, primary_key=True)
+    pid = db.Column(db.ForeignKey('t_project.id'))
+    uid = db.Column(db.ForeignKey('t_user.id'))
+
+
 
 
 t_t_sp = db.Table(
