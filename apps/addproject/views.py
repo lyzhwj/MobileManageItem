@@ -1,12 +1,14 @@
 import re
 
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, session
 
 from apps.addproject import addproject
+from apps.decorate import login_required
 from apps.model import Project, db, Dictionary, Province, Officer
 
 
 @addproject.route('/addproject/', methods=("GET", "POST"))
+@login_required
 def AddProject():
     # GET请求
     if request.method == "GET":
@@ -24,6 +26,7 @@ def AddProject():
         p_num = Dictionary.query.filter(Dictionary.pid < 13).all()
         provinces = Province.query.filter().all()
         return render_template('addproject.html', p_num=p_num, provinces=provinces)
+
     # POST请求
     if request.method == "POST":
         pid = request.args.get('pid', 0)
@@ -92,7 +95,11 @@ def AddProject():
 
 @addproject.route('/planlist/')
 def PlanList():
-    project = Project.query.filter(Project.status == 21, Project.uid == 1).all()
+    pid = request.args.get('pid')
+    project = Project.query.filter(Project.uid == 1).all()
     officer = Officer.query.filter(Officer.pid == project[0].id).all()
-
+    print(project[0].status)
+    if pid:
+        Project.query.filter(Project.id == pid).first().status = 22
+        db.session.commit()
     return render_template('planlist.html', project=project, officer=officer)

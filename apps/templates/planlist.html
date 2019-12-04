@@ -6,7 +6,7 @@
             <tr>
 
                 <th>
-                    <input type="checkbox" checked class="i-checks" name="inputall[]" onblur="isCheckAll()">
+                    <input type="checkbox" checked class="i-checks" name="inputall[]" onclick="swapCheck()">
                 </th>
                 <th>项目编号</th>
                 <th>项目名称</th>
@@ -20,8 +20,8 @@
             <tbody>
 
 
-                {% for p in project %}
-                     <tr>
+            {% for p in project %}
+                <tr>
                     <td><input type="checkbox" checked class="i-checks" name="input[]"></td>
                     <td>{{ p.id }}</td>
                     <td>{{ p.pname }}</td>
@@ -32,12 +32,17 @@
                     {% endfor %}</td>
                     <td>{{ p.total_account }}</td>
                     <td>
-                        <a href="/addproject/?pid={{ p.id }}">修改</a>
-                        <a href="table_basic.html#">提交审核</a>
-                    </td>
-                     </tr>
-                {% endfor %}
+                        {% if p.status == 21 %}
+                            <a href="/addproject/?pid={{ p.id }}">修改</a>
+                            <a href="/planlist/?pid={{ p.id }}">提交审核</a>
+                        {% else %}
+                            <span></span>
+                            <span>已提交,待审核</span>
 
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
 
 
             </tbody>
@@ -68,21 +73,23 @@
 
 {% endblock %}
 {% block js %}
-     <script>
-     //checkbox 全选/取消全选
-    var isCheckAll = false;
-    function swapCheck() {
-        if (isCheckAll) {
-            $("input[type='checkbox']").each(function() {
-                this.checked = false;
-            });
-            isCheckAll = false;
-        } else {
-            $("input[type='checkbox']").each(function() {
-                this.checked = true;
-            });
-            isCheckAll = true;
-        }}
+    <script>
+        //checkbox 全选/取消全选
+        var isCheckAll = false;
+
+        function swapCheck() {
+            if (isCheckAll) {
+                $("input[type='checkbox']").each(function () {
+                    this.checked = false;
+                });
+                isCheckAll = false;
+            } else {
+                $("input[type='checkbox']").each(function () {
+                    this.checked = true;
+                });
+                isCheckAll = true;
+            }
+        }
 
     </script>
 {% endblock %}
