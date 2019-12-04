@@ -2,72 +2,129 @@
 
 {% block content %}
 
-    <div class="table-responsive">
+    <form class="form-horizontal">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">项目编号：</label>
+                    <div class="col-sm-6">
+                        <text class="footable-visible" style="line-height: 30px">{{ project.id }}</text>
+                    </div>
+                </div>
 
-        {#  待审项目信息 #}
-        <table class="table table-striped">
-            {% for foo in project.items %}
-                {{ foo.value }}
-            {% endfor %}
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">项目类别：</label>
+                    <div class="col-sm-6">
+                        <text style="line-height: 30px">{{ project.catgory }}</text>
+                    </div>
+                </div>
 
-            <tr>
-                <td>项目编号</td>
-                <td>{{ project.id }}</td>
-            </tr>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">总预算：</label>
+                    <div class="col-sm-6">
+                        <text style="line-height: 30px">{{ project.total_account }}</text>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">预计启动时间：</label>
+                    <div class="col-sm-6">
+                        <text style="line-height: 30px">{{ project.pre_ini_date }}</text>
+                    </div>
+                </div>
 
-            <tr>
-                <td>项目名称</td>
-                <td>{{ project.name }}</td>
-            </tr>
-            <tr>
-                <td>负责人</td>
-                <td>{{ project.uid | userName }}</td>
-            </tr>
-            <tr>
-                <td>项目状态</td>
-                <td>{{ project.status | dictFilter }}</td>
-            </tr>
-            <tr>
-                <td>项目类型</td>
-                <td>{{ project.work_type | dictFilter }}</td>
-            </tr>
-            <tr>
-                <td><label for="info">项目详情</label></td>
-                <td><TEXTAREA id="info" readonly> {{ project.info }}</TEXTAREA></td>
-            </tr>
-        </table>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">负责人：</label>
+                    <div class="col-sm-6">
+                        <text style="line-height: 30px">{{ project.uid | userName }}</text>
+                    </div>
+                </div>
+                <div class="row ">
+                    <label class="col-sm-3 control-label">最后修改时间：</label>
+                    <div class="col-sm-6 ">
+                        <text style="line-height: 30px">{{ project.update_date }}</text>
+                    </div>
+                </div>
+                <br><br>
+                <div class="row ">
+                    <label class="col-md-3 control-label">项目详情：</label>
+                    <div class="col-sm-6 ">
+                        <textarea class="col-md-offset-0" name="info" cols="120" rows="10" readonly
+                                  placeholder="{{ project.info }}"></textarea>
+                    </div>
+                </div>
 
+            </div>
 
-        {#  历史审核信息 #}
-        {% if flag > 0 %}
-            <table class="table table-striped">
-
-                {# 标题栏 #}
-                <thead>
-                <tr>
-                    <th>项目编号</th>
-                    <th>审核人</th>
-                    <th>审核描述</th>
-                    <th>状态</th>
-                </tr>
-                </thead>
-
-                {% for history in histories %}
-                    <tbody>
-                    <tr>
-                        <td>{{ history.pid }}</td>
-                        <td>{{ history.uid | userName }}</td>
-                        <td>{{ history.info }}</td>
-                        <td>{{ history.status | dictFilter }}</td>
-                    </tr>
-
-                    </tbody>
-                {% endfor %}
-
-            </table>
-        {% endif %}
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">项目名称：</label>
+                    <div class="col-sm-6">
+                        <text style="line-height: 30px">{{ project.pname }}</text>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">承担省份：</label>
+                    <div class="col-sm-6">
+                        <text style="line-height: 30px">{{ project.province }}</text>
+                    </div>
+                </div>
 
 
-    </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">项目状态：</label>
+                    <div class="col-sm-6">
+                        <text style="line-height: 30px">{{ project.status | dictFilter }}</text>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">预计结束时间：</label>
+                    <div class="col-sm-6">
+                        <text style="line-height: 30px">{{ project.pre_end_date }}</text>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">联系电话：</label>
+                    <div class="col-sm-6">
+                        <text style="line-height: 30px">{{ project.tel }}</text>
+                    </div>
+                </div>
 
+                <br>
+            </div>
+
+        </div>
+
+    </form>
+
+    {# 历史审核信息 #}
+    {% if flag > 0 %}
+        <form class="form-horizontal">
+            <div class="row">
+                <div class="col-md-8 col-lg-offset-2">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>项目编号</th>
+                                <th>审核人</th>
+                                <th>审核描述</th>
+                                <th>状态</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for history in histories %}
+                                <tr>
+                                    <td>{{ history.pid }}</td>
+                                    <td>{{ history.uid | userName }}</td>
+                                    <td>{{ history.info }}</td>
+                                    <td>{{ history.status | dictFilter }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    {% endif %}
 {% endblock %}

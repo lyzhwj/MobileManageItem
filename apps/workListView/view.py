@@ -1,5 +1,7 @@
-from flask import render_template, request, redirect, url_for
-from apps.model import Project, History, User, db, Dictory
+from flask import render_template, request, redirect, url_for, session
+
+from apps.decorate import login_required
+from apps.model import Project, History, User, db, Dictionary
 from apps.workListView import wkl
 
 per_page = 1  # 每页数量
@@ -7,27 +9,25 @@ STATIC_UID = 1
 
 
 @wkl.route('/to_be_audited/', methods=['POST', 'GET'])  # 待审核工作
+@login_required
 def to_be_audited():
     if request.method == 'GET':
-        uid = request.args.get('uid', 1)  # 通过session获取uid
-        print("uid：" + str(uid))
+        uid = session.get('id')  # 通过session获取uid
         page = int(request.args.get('page', 1))  # url传参
         paginate = Project.query.filter(Project.uid == uid,
                                         Project.status == 22).paginate(page=page, per_page=per_page, error_out=False)
-        print(page)
         return render_template('workList/to_be_audited.html', paginate=paginate)
 
 
 @wkl.route('/operate/', methods=['POST', 'GET'])  # 审核工作
+@login_required
 def operation():
-    uid = int(request.args.get("uid", STATIC_UID))
-    print(uid)
+    uid = session.get('id')
     if User.query.get(uid).rid > 1:
         pid = int(request.args.get('pid', default=0))
         if pid == 0:
             return redirect(url_for('workListView.to_be_audited'))
         project = Project.query.get(pid)
-
         if request.method == 'GET':
             histories = History.query.filter(History.pid == pid)
             flag = histories.count()
@@ -47,18 +47,20 @@ def operation():
 
 
 @wkl.route('/to_be_revised/', methods=['GET'])  # 待修改工作
+@login_required
 def to_be_revised():
     if request.method == 'GET':
-        uid = request.args.get('uid', STATIC_UID)  # 通过session获取uid
-        page = int(request.form.get('page', 1))
+        uid = session.get('id')
+        page = int(request.args.get('page', 1))
         paginate = Project.query.filter(Project.uid == uid,
                                         Project.status == 24).paginate(page=page, per_page=per_page, error_out=False)
+
         return render_template('workList/to_be_revised.html', paginate=paginate)
 
 
 @wkl.route('/revise/', methods=['POST', 'GET'])  # 修改工作
+@login_required
 def revise():
-    uid = request.args.get('uid', 1)  # 通过session获取uid,进行是否已登录验证，可以写一个验证函数
     pid = request.args.get('pid', 0)
     if pid == 0:
         return redirect(url_for('workListView.to_be_revised'))  # 重定向
@@ -77,8 +79,8 @@ def revise():
 
 
 @wkl.route('/to_be_seen/', methods=['GET'])  # 待查看工作
+@login_required
 def to_be_seen():
-    uid = request.args.get('uid', STATIC_UID)  # 通过session获取uid,进行是否已登录验证，可以写一个验证函数
     page = int(request.form.get('page', 1))
 
     if request.method == 'GET':
@@ -88,10 +90,9 @@ def to_be_seen():
 
 
 @wkl.route('/check/', methods=['POST', 'GET'])  # 查看工作
+@login_required
 def check():
-    uid = request.args.get('uid', 0)  # 通过session获取uid,进行是否已登录验证，可以写一个验证函数
     pid = request.args.get('pid', 0)
-
     if pid == 0:
         return redirect(url_for('workListView.to_be_revised'))
 
@@ -107,25 +108,28 @@ def check():
         flag = histories.count()
         return render_template('workList/check.html', project=project, histories=histories, flag=flag)
 
-    project.status = request.form.get('status')
-    db.session.commit()
+    status = int(request.form.get('status'))
+    if status == 27:
+        project.status = status
+        db.session.commit()
     return redirect(url_for('workListView.to_be_revised'))
 
 
 @wkl.route('/completed/', methods=['GET'])  # 已完成工作
+@login_required
 def completed():
-    uid = request.args.get('uid', 1)  # 通过session获取uid,进行是否已登录验证，可以写一个验证函数
-    page = int(request.form.get('page', 1))
+    uid = session.get('id')
+    page = int(request.args.get('page', 1))
 
     if request.method == 'GET':
         paginate = Project.query.filter(Project.uid == uid,
-                                        Project.status == 27).paginate(page=page, per_page=per_page, error_out=False)
+                                        Project.status.in_([25, 27])).paginate(page=page, per_page=per_page, error_out=False)
         return render_template('workList/completed.html', paginate=paginate)
 
 
 @wkl.route('/detail/', methods=['GET'])  # 已完成工作内容
+@login_required
 def detail():
-    uid = request.args.get('uid', 0)  # 通过session获取uid,进行是否已登录验证，可以写一个验证函数
     pid = request.args.get('pid', 0)
 
     if pid == 0:
@@ -140,9 +144,9 @@ def detail():
 
 @wkl.app_template_filter('dictFilter')
 def dictFilter(num):
-    return Dictory.query.filter(Dictory.pid == num).first().name
+    return Dictionary.query.filter(Dictionary.pid == int(num)).first().name
 
 
 @wkl.app_template_filter('userName')
 def userName(num):
-    return User.query.get(num).uname
+    return User.query.get(int(num)).uname
