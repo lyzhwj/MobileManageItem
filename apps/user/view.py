@@ -15,7 +15,7 @@ def login_view():
         if user:
             password = request.form.get('pwd')
             if user.pwd == password:
-                session['user'] = user.uname
+                session['user'] = user.id
                 return redirect(url_for('user.index_view'))
             else:
                 return render_template('login.html')
