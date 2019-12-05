@@ -11,6 +11,7 @@ from apps.model import Project, db, Dictionary, Province, Officer
 @login_required
 def AddProject():
     # GET请求
+
     if request.method == "GET":
         pid = request.args.get('pid')
         print(pid)
@@ -73,7 +74,9 @@ def AddProject():
         if re.match(r'^1[3|4|5|7||9|][0-9]{9}$', tel):
             return render_template('addproject.html', errmsg='手机格式错误')
         if all(context.values()):
-            project = Project(pname=pro_name, catgory=cls, uid=1, tel=tel, province=province,
+            user = session.get('user')
+            print(user)
+            project = Project(pname=pro_name, catgory=cls, uid=user, tel=tel, province=province,
                               total_account=total_account, pre_ini_date=pre_ini_date, rea_ini_date=rea_ini_date,
                               pre_end_date=pre_end_date, rea_end_date=rea_end_date, info=info, status=21)
             db.session.add(project)
@@ -94,11 +97,13 @@ def AddProject():
 
 
 @addproject.route('/planlist/')
+@login_required
 def PlanList():
     pid = request.args.get('pid')
-    project = Project.query.filter(Project.uid == 1).all()
-    officer = Officer.query.filter(Officer.pid == project[0].id).all()
-    print(project[0].status)
+    user = session.get('user')
+    project = Project.query.filter(Project.uid == user).all()
+    if project:
+        officer = Officer.query.filter(Officer.pid == project[0].id).all()
     if pid:
         Project.query.filter(Project.id == pid).first().status = 22
         db.session.commit()
