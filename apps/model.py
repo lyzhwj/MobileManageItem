@@ -1,8 +1,9 @@
 # coding: utf-8
 from datetime import datetime
 
-from apps import app
 from flask_sqlalchemy import SQLAlchemy
+
+from apps import app
 
 db = SQLAlchemy(app)
 
@@ -36,7 +37,9 @@ class Project(db.Model):
     total_account = db.Column(db.FLOAT)
     info = db.Column(db.String(256))
     status = db.Column(db.Integer)
+
     user = db.relationship('User')
+    officer = db.relation('Officer')
 
 
 class History(db.Model):
@@ -49,13 +52,13 @@ class History(db.Model):
     opa_time = db.Column(db.DateTime, default=datetime.now())  # 操作时间
     uid = db.Column(db.ForeignKey('t_user.id'), index=True)
 
-    t_project = db.relationship('Project')
-    t_user = db.relationship('User')
+    project = db.relationship('Project')
+    user = db.relationship('User')
 
 
 class Dictionary(db.Model):
     __tablename__ = 't_dict'
-    __table_args__ = {'useexisting':True}
+    __table_args__ = {'useexisting': True}
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(32))
     pid = db.Column(db.Integer)
@@ -73,5 +76,3 @@ class Officer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     pid = db.Column(db.ForeignKey('t_project.id'))
     uid = db.Column(db.ForeignKey('t_user.id'))
-
-

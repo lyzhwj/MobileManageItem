@@ -1,7 +1,7 @@
 from flask import render_template, request, redirect, url_for, session
 
 from apps.decorate import login_required
-from apps.model import Project, History, User, db, Dictionary
+from apps.model import Project, History, User, db, Dictionary, Officer
 from apps.workListView import wkl
 
 per_page = 1  # 每页数量
@@ -12,9 +12,13 @@ STATIC_UID = 1
 @login_required
 def to_be_audited():
     if request.method == 'GET':
-        uid = session.get('id')  # 通过session获取uid
+        uid = session.get('user')  # 通过session获取uid
         page = int(request.args.get('page', 1))  # url传参
-        paginate = Project.query.filter(Project.uid == uid,
+        offices = Officer.query.filter(Officer.uid == uid).all()
+        pids = []
+        for office in offices:
+            pids.append(office.pid)
+        paginate = Project.query.filter(Project.id.in_(pids),
                                         Project.status == 22).paginate(page=page, per_page=per_page, error_out=False)
         return render_template('workList/to_be_audited.html', paginate=paginate)
 
@@ -38,7 +42,6 @@ def operation():
         info = request.form.get("info")
         project.status = status
 
-        print('sljfldsjfalkjdlkfj')
         th = History(pid=pid, info=info, uid=uid, status=status)
         db.session.add(th)
         db.session.commit()
@@ -49,13 +52,11 @@ def operation():
 @wkl.route('/to_be_revised/', methods=['GET'])  # 待修改工作
 @login_required
 def to_be_revised():
-    if request.method == 'GET':
-        uid = session.get('id')
-        page = int(request.args.get('page', 1))
-        paginate = Project.query.filter(Project.uid == uid,
-                                        Project.status == 24).paginate(page=page, per_page=per_page, error_out=False)
-
-        return render_template('workList/to_be_revised.html', paginate=paginate)
+    uid = session.get('user')
+    page = int(request.args.get('page', 1))
+    paginate = Project.query.filter(Project.uid == uid,
+                                    Project.status == 24).paginate(page=page, per_page=per_page, error_out=False)
+    return render_template('workList/to_be_revised.html', paginate=paginate)
 
 
 @wkl.route('/revise/', methods=['POST', 'GET'])  # 修改工作
@@ -74,7 +75,6 @@ def revise():
     project.status = request.form.get('status')  # 通过url传参
     project.info = request.form.get('info')
     db.session.commit()
-
     return redirect(url_for('workListView.to_be_revised'))
 
 
@@ -82,9 +82,9 @@ def revise():
 @login_required
 def to_be_seen():
     page = int(request.form.get('page', 1))
-
+    uid = session.get('user')
     if request.method == 'GET':
-        paginate = Project.query.filter(Project.uid == 1,
+        paginate = Project.query.filter(Project.uid == uid,
                                         Project.status == 26).paginate(page=page, per_page=per_page, error_out=False)
         return render_template('workList/to_be_seen.html', paginate=paginate)
 
@@ -118,7 +118,7 @@ def check():
 @wkl.route('/completed/', methods=['GET'])  # 已完成工作
 @login_required
 def completed():
-    uid = session.get('id')
+    uid = session.get('user')
     page = int(request.args.get('page', 1))
 
     if request.method == 'GET':
@@ -131,7 +131,6 @@ def completed():
 @login_required
 def detail():
     pid = request.args.get('pid', 0)
-
     if pid == 0:
         return redirect(url_for('workListView.to_be_revised'))
 
