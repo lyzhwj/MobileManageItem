@@ -5,8 +5,6 @@ from apps.model import Project, History, User, db, Dictionary, Officer
 from apps.workListView import wkl
 
 per_page = 1  # 每页数量
-STATIC_UID = 1
-
 
 @wkl.route('/to_be_audited/', methods=['POST', 'GET'])  # 待审核工作
 @login_required
