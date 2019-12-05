@@ -97,12 +97,13 @@ def AddProject():
 
 
 @addproject.route('/planlist/')
+@login_required
 def PlanList():
     pid = request.args.get('pid')
     user = session.get('user')
     project = Project.query.filter(Project.uid == user).all()
-    officer = Officer.query.filter(Officer.pid == project[0].id).all()
-    print(project[0].status)
+    if project:
+        officer = Officer.query.filter(Officer.pid == project[0].id).all()
     if pid:
         Project.query.filter(Project.id == pid).first().status = 22
         db.session.commit()
